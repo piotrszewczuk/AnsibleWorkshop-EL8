@@ -1,4 +1,4 @@
-# OpenSourceTech2021
+# Ansible Workshop
 
 ## Instrukcja uruchomienia środowiska laboratoryjnego
 
@@ -19,7 +19,7 @@ Dodatkowo należy pobrać i zainstalować następujące oprogramowanie:
 
 2. **Uruchomienie środowiska laboratoryjnego**
 
-Po instalacji wymaganego oprogramowania należy pobrać plik z definicją laboratoryjnego środowiska Ansible i zapisać go w lokalnym katalogu np. 'OpenSourceTech' na dysku C: (w sytemach MS Windows) lub w katalogu domowym użytkownika (w systemach Apple macOS i Linux):
+Po instalacji wymaganego oprogramowania należy pobrać plik z definicją laboratoryjnego środowiska Ansible i zapisać go w lokalnym katalogu np. 'AnsibleWorkshop' na dysku C: (w sytemach MS Windows) lub w katalogu domowym użytkownika (w systemach Apple macOS i Linux):
 - https://github.com/piotrszewczuk/AnsibleWorkshop-OL8/raw/main/Vagrantfile
 
 > **UWAGA !!!**
