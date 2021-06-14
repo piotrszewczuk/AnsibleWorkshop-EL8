@@ -1,0 +1,15 @@
+---
+- name: "Playbook 2 - Play1"
+  hosts: xyz
+  become: yes
+  become_user: root
+  
+  tasks:
+  - name: "Copy motd file"
+    template:
+      src: files/motd.j2
+      dest: /etc/motd
+      owner: root
+      group: root
+      mode: '0644'
+...
