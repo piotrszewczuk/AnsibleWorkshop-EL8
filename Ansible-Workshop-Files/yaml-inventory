@@ -1,0 +1,13 @@
+---
+ungrouped:
+  hosts: null
+www:
+  hosts:
+    node2:
+    node3:
+  vars: null
+db:
+  hosts:
+    node1:
+  vars: null
+...
