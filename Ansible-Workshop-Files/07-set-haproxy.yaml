@@ -1,0 +1,11 @@
+---
+- name: "Playbook 7 - Play1 - Set Haproxy"
+  hosts: proxy
+  tasks:
+  - name: "Instalacja HAProxy"
+    dnf:
+      state: latest
+      name:
+        - haproxy
+
+...
