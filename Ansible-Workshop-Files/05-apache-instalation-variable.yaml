@@ -8,20 +8,20 @@
     firewall_web_service: http
     admin_soft: mc
   tasks:
-  - name: "Instalacja pakietow"
+  - name: "Installation of packages"
     yum:
       name:
         - "{{ web_pkg }}"
         - "{{ admin_soft }}"
       state: latest
 
-  - name: "Uruchomienie Apache`a"
+  - name: "Starting Apache"
     service:
       name: "{{ web_service }}"
       state: started
       enabled: true 
 
-  - name: "Start Firewall`a"
+  - name: "Starting Firewall"
     service:
       name: firewalld
       state: started
@@ -52,9 +52,8 @@
 - name: "Playbook 5 - Play 2 Test"
   hosts: localhost
   tasks:
-  - name: "Test www con"
+  - name: "Connection test"
     uri:
       url: http://node2
       status_code: 200
-      
 ...

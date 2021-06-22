@@ -1,0 +1,26 @@
+---
+- name: "Playbook 9 - Play1 - Block"
+  hosts: www
+  tasks:
+  - name: "Block Code"
+    block:
+    - name: "Starting Chronyd"
+      service:
+        name: chronyd
+        state: started
+        enabled: yes
+    rescue:
+    - name: "Installing Chrony"
+      dnf:
+        state: latest
+        name: chrony
+    - name: "Starting Chronyd"
+      service:
+        name: chronyd
+        state: started
+        enabled: yes
+    always:
+    - name: "Always Section"
+      debug:
+        msg: "Hello World ;-)"
+...

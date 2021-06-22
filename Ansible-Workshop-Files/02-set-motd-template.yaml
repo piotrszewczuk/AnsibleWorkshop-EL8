@@ -1,6 +1,6 @@
 ---
 - name: "Playbook 2 - Play1"
-  hosts: xyz
+  hosts: infra
   become: yes
   become_user: root
   

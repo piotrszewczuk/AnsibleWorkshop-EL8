@@ -1,0 +1,15 @@
+frontend http_balancer
+	bind {{ haproxy_ip }}:{{ proxy_in_port }}
+	option http-server-close
+	option forwardfor
+
+	default_backend  webservers
+
+backend webservers
+	mode http
+	balance roundrobin
+	
+{% for server in haproxy_backend_servers %}
+server {{server.name}}:{{server.port}} {{server.ip}}:{{server.port}} {{server.paramstring}}
+{% endfor %}
+	

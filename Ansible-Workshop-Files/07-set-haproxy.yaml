@@ -1,11 +1,49 @@
 ---
 - name: "Playbook 7 - Play1 - Set Haproxy"
   hosts: proxy
+  vars_files:
+    - haproxy-vars.yaml
   tasks:
-  - name: "Instalacja HAProxy"
+  - name: "HAProxy installation"
     dnf:
       state: latest
       name:
         - haproxy
+  
+  - name: "Test - file exists?"
+    stat:
+      path: /etc/haproxy/haproxy.cfg-orig
+    register: stat_haproxy_cfg
 
+  - name: "Moving the original config file"
+    command: "mv /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg-orig"
+    when: stat_haproxy_cfg.stat.exists == False
+
+  - name: "Copying HAProxy config file"
+    template:
+      src: files/haproxy-cfg.j2
+      dest: /etc/haproxy/haproxy.cfg
+      mode: '0644'
+      owner: root
+      group: root
+      backup: yes
+
+  - name: "Starting Firewall"
+    service:
+      name: firewalld
+      state: started
+      enabled: true
+
+  - name: "Opening Firewall Ports"
+    firewalld:
+      port: 80/tcp
+      permanent: yes
+      state: enabled
+      immediate: yes  
+
+  - name: "Running HAProxy"
+    systemd:
+      name: haproxy
+      state: started
+      enabled: yes
 ...
