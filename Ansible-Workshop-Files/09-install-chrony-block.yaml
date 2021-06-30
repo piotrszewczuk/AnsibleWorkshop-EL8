@@ -4,23 +4,23 @@
   tasks:
   - name: "Block Code"
     block:
-    - name: "Starting Chronyd"
+    - name: "Start Chronyd"
       service:
         name: chronyd
         state: started
         enabled: yes
     rescue:
-    - name: "Installing Chrony"
+    - name: "Instalacja chrony"
       dnf:
         state: latest
         name: chrony
-    - name: "Starting Chronyd"
+    - name: "Start Chronyd"
       service:
         name: chronyd
         state: started
         enabled: yes
     always:
-    - name: "Always Section"
+    - name: "Sekcja Always"
       debug:
         msg: "Hello World ;-)"
 ...

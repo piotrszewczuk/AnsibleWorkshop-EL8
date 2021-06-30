@@ -2,7 +2,7 @@
 - name: "Playbook 8 - Play1 - Install soft"
   hosts: lan_hosts
   tasks:
-  - name: "Installing packages"
+  - name: "Instalacja pakietow"
     dnf:
       state: latest
       name:

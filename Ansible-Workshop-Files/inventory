@@ -1,6 +1,9 @@
 [proxy]
 node1
 
+[appsrv]
+node1
+
 [www]
 node2
 node3

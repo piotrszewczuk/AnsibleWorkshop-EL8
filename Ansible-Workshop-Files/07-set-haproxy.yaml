@@ -4,22 +4,22 @@
   vars_files:
     - haproxy-vars.yaml
   tasks:
-  - name: "HAProxy installation"
+  - name: "Instalacja HAProxy"
     dnf:
       state: latest
       name:
         - haproxy
   
-  - name: "Test - file exists?"
+  - name: "Test istnienia pliku"
     stat:
       path: /etc/haproxy/haproxy.cfg-orig
     register: stat_haproxy_cfg
 
-  - name: "Moving the original config file"
+  - name: "Przeniesienie konfiga oryginalnego"
     command: "mv /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg-orig"
     when: stat_haproxy_cfg.stat.exists == False
 
-  - name: "Copying HAProxy config file"
+  - name: "Kopiowanie HAProxy konfiga"
     template:
       src: files/haproxy-cfg.j2
       dest: /etc/haproxy/haproxy.cfg
@@ -28,22 +28,23 @@
       group: root
       backup: yes
 
-  - name: "Starting Firewall"
+  - name: "Start Firewall"
     service:
       name: firewalld
       state: started
       enabled: true
 
-  - name: "Opening Firewall Ports"
+  - name: "Dziurka w firewall - 80"
     firewalld:
       port: 80/tcp
       permanent: yes
       state: enabled
       immediate: yes  
 
-  - name: "Running HAProxy"
+  - name: "Uruchomienie HAProxy"
     systemd:
       name: haproxy
       state: started
       enabled: yes
+
 ...

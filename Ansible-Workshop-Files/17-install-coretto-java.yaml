@@ -1,0 +1,9 @@
+--- 
+- name: "Playbook 17"
+  hosts: www
+  #post-tasks: 
+  #  - 
+  #    name: "Java test"
+  #    shell: "java --version"
+  roles: 
+    - softasap.sa_java_corretto

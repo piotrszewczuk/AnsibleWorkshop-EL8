@@ -1,5 +1,5 @@
 ---
-- name: "Playbook 4 - Play 1"
+- name: Test play
   hosts: proxy
 
   tasks:
@@ -7,7 +7,7 @@
       ansible.builtin.shell: cat /etc/motd
       register: motd_contents
 
-    - name: "Use the variable in conditional statement"
+    - name: Use the variable in conditional statement
       ansible.builtin.shell: echo "motd contains the word hi"
       when: motd_contents.stdout.find('hi') != -1
 ...
