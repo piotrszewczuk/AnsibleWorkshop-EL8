@@ -13,7 +13,7 @@
       state: touch
     when: plik1_test
 
-  - name: "File-1 Test"
+  - name: "File-2 Test"
     stat:
       path: /tmp/plik2
     register: plik2_test
