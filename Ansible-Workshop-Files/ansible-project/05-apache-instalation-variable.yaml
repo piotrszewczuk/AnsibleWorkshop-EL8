@@ -1,0 +1,71 @@
+---
+- name: "Playbook 05 - Play 1"
+  hosts: www
+  vars:
+    web_pkg: httpd
+    web_service: httpd
+    firewall_service: firewalld
+    firewall_web_service: http
+    admin_soft: mc
+  tasks:
+  - name: "Instalacja pakietow"
+    yum:
+      name:
+        - "{{ web_pkg }}"
+        - "{{ admin_soft }}"
+      state: latest
+
+  - name: "Uruchomienie Apache`a"
+    service:
+      name: "{{ web_service }}"
+      state: started
+      enabled: true 
+
+  - name: "Start Firewall"
+    service:
+      name: firewalld
+      state: started
+      enabled: true
+
+  - name: "Open Apache Port"
+    firewalld:
+      service: "{{ firewall_web_service }}"
+      permanent: true
+      state: enabled
+      immediate: true
+
+  - name: "Copy web content"
+    template:
+      src: files/index-html.j2
+      dest: /var/www/html/index.html
+      mode: '0644'
+      owner: root
+      group: root 
+    notify: "restart apache"
+
+  handlers:
+  - name: "restart apache"
+    service:
+      name: "{{ web_service }}"
+      state: restarted
+
+- name: "Playbook 5 - Play 2 Test"
+  hosts: localhost
+  tasks:
+  - name: "Test www con"
+    uri:
+      url: http://node2
+      status_code: 200
+      
+
+
+
+
+
+
+
+
+
+
+
+...

@@ -1,0 +1,90 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+try:
+    from urllib.request import Request, urlopen
+except ImportError:  # python 2
+    from urllib2 import Request, urlopen
+
+import re
+import os
+import sys
+import argparse
+
+valid_packages = ['jre', 'server-jre', 'jdk']
+try:
+    valid_java_versions = xrange(7, 9, 1)
+except NameError:
+        valid_java_versions = range(7, 9, 1)
+
+current_java_download_location= "https://docs.aws.amazon.com/corretto/latest/corretto-8-ug/downloads-list.html"
+
+targz_regex="https:\/\/[A-Za-z0-9]*\.cloudfront\.net\/[0-9.]*\/amazon-corretto-[0-9.]*-linux-x64\.tar\.gz"
+deb_regex="https:\/\/[A-Za-z0-9]*\.cloudfront\.net\/[0-9.]*\/java-1\.8\.0-amazon-corretto-jdk_[0-9.]*-1_amd64.deb"
+rpm_regex="https:\/\/[A-Za-z0-9]*\.cloudfront\.net\/[0-9.]*\/java-1\.8\.0-amazon-corretto-devel-[0-9.]*_[0-9\.a-c]+-1\.x86_64\.rpm"
+win_regex="https:\/\/[A-Za-z0-9]*\.cloudfront\.net\/[0-9.]*\/amazon-corretto-[0-9.]*-windows-x64\.msi"
+
+
+java_download_locations = [
+]
+
+def regex_websearch(url, pattern):
+    req = Request(url)
+    resp = urlopen(req)
+    content = resp.read().decode('UTF-8')
+    resp.close()
+    match = re.search(pattern, content)
+    return match
+
+
+def discover_latest_java(java_version=8, package='server-jre', extension='tar.gz',
+                         architecture='linux-x64'):
+    if package not in valid_packages:
+        print('Invalid Java package selection, valid packages are:')
+        for valid_package in valid_packages:
+            print('\t' + valid_package)
+        return None
+    download_url = ""
+    if extension == "deb":
+      match = regex_websearch(current_java_download_location, deb_regex)
+      try:
+        download_url=match.group(0)
+      except IndexError:
+        download_url = "{{ debian_download_url }}"
+    elif extension == "rpm":
+      match = regex_websearch(current_java_download_location, rpm_regex)
+      try:
+        download_url=match.group(0)
+      except IndexError:
+        download_url = "{{ rpm_download_url }}"
+    elif extension == "tar.gz":
+      match = regex_websearch(current_java_download_location, targz_regex)
+      try:
+        download_url=match.group(0)
+      except IndexError:
+        download_url = "{{ source_download_url }}"
+    elif extension == "msi":
+      match = regex_websearch(current_java_download_location, win_regex)
+      try:
+        download_url=match.group(0)
+      except IndexError:
+        download_url = "{{ source_download_url }}"
+
+    return download_url
+
+if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-e', '--extension', default="tar.gz")
+    parser.add_argument('-p', '--package', default="jdk")
+    parser.add_argument('-v', '--version', default='8')
+    parser.add_argument('-a', '--architecture', default='linux-x64')
+    parsed = parser.parse_args()
+
+    result=discover_latest_java(java_version=parsed.version, package=parsed.package, extension=parsed.extension, architecture=parsed.architecture)
+    if result is None:
+      sys.exit(1)
+    print (result)
+    sys.exit(0)
+
+

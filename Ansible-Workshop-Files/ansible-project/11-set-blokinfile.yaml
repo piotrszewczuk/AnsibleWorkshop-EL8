@@ -1,0 +1,46 @@
+---
+- name: "Playbook 11 - Play1 - Block in File"
+  hosts: www
+  tasks:
+  - name: "File-1 Test"
+    stat:
+      path: /tmp/plik1
+    register: plik1_test
+
+  - name: "Creating File1"
+    file:
+      path: /tmp/plik1
+      state: touch
+    when: plik1_test
+
+  - name: "File-1 Test"
+    stat:
+      path: /tmp/plik2
+    register: plik2_test
+
+  - name: "Creating File2"
+    file:
+      path: /tmp/plik2
+      state: touch
+    when: plik2_test
+
+  - name: "Write to File 1"
+    blockinfile:
+      path: /tmp/plik1
+      marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->" 
+      block: |
+        Litwo 
+        ojczyzno
+        moja
+        ty jestes jak ...
+
+  - name: "Write to File 2"
+    blockinfile:
+      path: /tmp/plik2
+      marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
+      block: >
+        Litwo
+        ojczyzno
+        moja
+        ty jestes jak ...
+---

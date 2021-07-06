@@ -1,0 +1,13 @@
+---
+# vars file for kubernetes-master
+pod_net: 172.17.0.0/16
+calico_yaml_url: https://docs.projectcalico.org/v3.4/getting-started/kubernetes/installation/hosted/calico.yaml
+
+token_file: join_token
+
+master_ports:
+  - "6443/tcp"
+  - "2379-2380/tcp"
+  - "10250-10252/tcp"
+  - "8285/udp"
+  - "8472/udp"

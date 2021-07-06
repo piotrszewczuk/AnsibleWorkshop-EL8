@@ -1,0 +1,18 @@
+---
+# vars file for kubernetes-prep
+packages:
+  - kubeadm
+  - kubectl
+  - yum-utils
+  - device-mapper-persistent-data
+  - lvm2
+
+unnecessary_packages:
+  - podman
+  - buildah
+  - skopeo
+
+services:
+  - docker
+  - kubelet
+  - firewalld

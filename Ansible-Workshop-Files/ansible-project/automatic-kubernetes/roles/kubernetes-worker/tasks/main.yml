@@ -1,0 +1,14 @@
+---
+# tasks file for kubernetes-worker
+- name: "Allow Network Ports in Firewalld for Workers"
+  firewalld:
+    port: "{{ item }}"
+    state: enabled
+    permanent: yes
+    immediate: yes
+  loop: "{{ worker_ports }}"
+
+- name: "Joining Worker Nodes with Kubernetes Master"
+  shell: |
+    kubeadm reset -f
+    sh /tmp/join-command.sh

@@ -1,0 +1,50 @@
+---
+# tasks file for kubernetes-master
+- name: "Allow Network Ports in Firewalld for Master"
+  firewalld:
+    port: "{{ item }}"
+    state: enabled
+    permanent: yes
+    immediate: yes
+  loop: "{{ master_ports }}"
+
+- name: "Pulling images required for setting up a Kubernetes cluster"
+  shell: kubeadm config images pull
+
+- name: "Resetting kubeadm"
+  shell: kubeadm reset -f
+  register: output
+
+- name: "Initializing Kubernetes cluster"
+  shell: "kubeadm init --apiserver-advertise-address {{ ansible_host }} --pod-network-cidr={{ pod_net }}"
+  register: output
+
+- name: "Storing Logs and Generated token for future purpose."
+  local_action: copy content={{ output.stdout }} dest=cluster_log
+  #become: False
+
+- name: "Creating .kube directory"
+  file:
+    path: $HOME/.kube
+    state: directory
+    mode: 0755
+
+- name: "Copying required files"
+  shell: |
+    cp -f /etc/kubernetes/admin.conf $HOME/.kube/config
+    chown $(id -u):$(id -g) $HOME/.kube/config
+
+- name: "Install Calico pod network"
+  #become: false
+  #command: kubectl apply -f {{ calico_yaml_url }}
+  command: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+
+- name: "Generate join command"
+  shell: kubeadm token create --print-join-command > /tmp/join-command.sh
+
+- name: "Fetch join command"
+  fetch:
+    src: "/tmp/join-command.sh"
+    dest: "join-command.sh"
+    flat: yes
+...    

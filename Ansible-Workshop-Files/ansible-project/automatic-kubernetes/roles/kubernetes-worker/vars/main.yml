@@ -1,0 +1,7 @@
+---
+# vars file for kubernetes-worker
+worker_ports:
+  - "10250/tcp"
+  - "8285/udp"
+  - "8472/udp"
+  - "30000-32767/tcp"

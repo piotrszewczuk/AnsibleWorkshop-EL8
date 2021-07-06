@@ -1,0 +1,30 @@
+---
+- name: "First Step - Preparing the Hosts"
+  hosts: kubernetes
+  roles:
+    - kubernetes-prep
+  tags:
+    - k8sprep
+
+- name: "Second Step - Installing of Master Servers"
+  hosts: k8s_master_nodes
+  roles:
+    - kubernetes-master
+  tags:
+    - k8smaster
+
+- name: "Third Step - Installing of Worker Servers"
+  hosts: k8s_worker_nodes
+  pre_tasks:
+  - name: "Copying Join Script to Worker Nodes"
+    copy:
+      src: join-command.sh
+      dest: /tmp/join-command.sh
+      mode: '0777'
+      #remote_src: yes
+
+  roles:
+    - kubernetes-worker
+  tags:
+    - k8sworker
+...

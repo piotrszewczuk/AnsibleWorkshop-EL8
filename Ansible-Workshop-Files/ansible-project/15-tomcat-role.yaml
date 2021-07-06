@@ -1,0 +1,31 @@
+---
+- name: "Playbook 15 - Play1 - Roles"
+  hosts: appsrv
+  pre_tasks:
+  - name: "Install unzip"
+    dnf:
+      name: unzip
+      state: latest
+
+  roles:
+    - tomcat
+
+  tasks:
+  - name: "Copy Java WAR App"
+    copy:
+      src: files/helloworld-0.1-dev.war
+      dest: '{{ tomcat_dir }}/current/webapps'
+      owner: tomcat
+      group: tomcat
+    tags:
+      - deploy
+
+  - name: "Create symbolic link to war app"
+    file:
+      src: '{{ tomcat_dir }}/current/webapps/helloworld-0.1-dev'
+      dest: '{{ tomcat_dir }}/current/webapps/helloworld'
+      state: link
+      force: yes
+    tags:
+      - deploy
+...

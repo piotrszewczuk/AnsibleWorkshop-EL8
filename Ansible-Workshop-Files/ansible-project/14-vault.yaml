@@ -1,0 +1,29 @@
+---
+- name: "Playbook 14 - Play1 - Vault"
+  hosts: www
+  vars_files:
+    - tajne-dane.yaml
+    - tajne-dane2.yaml
+  tasks:
+  - name: "File 1 Test"
+    stat:
+      path: '{{ zmienna_1 }}'
+    register: plik1_test
+
+  - name: "Creating File 1"
+    file:
+      path: '{{ zmienna_1 }}'
+      state: touch
+    when: plik1_test
+
+  - name: "File 2 Test"
+    stat:
+      path: '{{ zmienna_2 }}'
+    register: plik2_test
+
+  - name: "Creating File 2"
+    file:
+      path: '{{ zmienna_2 }}'
+      state: touch
+    when: plik2_test
+...
