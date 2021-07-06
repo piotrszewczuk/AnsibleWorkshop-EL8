@@ -2,29 +2,29 @@
 - name: "Playbook 11 - Play1 - Block in File"
   hosts: www
   tasks:
-  - name: "Test pliku1"
+  - name: "File-1 Test"
     stat:
       path: /tmp/plik1
     register: plik1_test
 
-  - name: "Utworz plik"
+  - name: "Creating File1"
     file:
       path: /tmp/plik1
       state: touch
     when: plik1_test
 
-  - name: "Test pliku2"
+  - name: "File-1 Test"
     stat:
       path: /tmp/plik2
     register: plik2_test
 
-  - name: "Utworz plik"
+  - name: "Creating File2"
     file:
       path: /tmp/plik2
       state: touch
     when: plik2_test
 
-  - name: "Zapis do pliku 1"
+  - name: "Write to File 1"
     blockinfile:
       path: /tmp/plik1
       marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->" 
@@ -34,7 +34,7 @@
         moja
         ty jestes jak ...
 
-  - name: "Zapis do pliku 2"
+  - name: "Write to File 2"
     blockinfile:
       path: /tmp/plik2
       marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
@@ -43,25 +43,4 @@
         ojczyzno
         moja
         ty jestes jak ...
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+---

@@ -1,6 +1,0 @@
----
-  - include_tasks: tasks_corretto_java_package.yml
-    when: ansible_os_family != "Windows"
-
-  - include_tasks: tasks_corretto_java_win.yml
-    when: ansible_os_family == "Windows"

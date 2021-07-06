@@ -1,6 +1,0 @@
---- 
-- name: "Playbook 18"
-  hosts: node3
-
-  roles: 
-    - inkatze.wildfly

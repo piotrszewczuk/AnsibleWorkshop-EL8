@@ -5,23 +5,23 @@
     - tajne-dane.yaml
     - tajne-dane2.yaml
   tasks:
-  - name: "Test pliku1"
+  - name: "File 1 Test"
     stat:
       path: '{{ zmienna_1 }}'
     register: plik1_test
 
-  - name: "Utworz plik"
+  - name: "Creating File 1"
     file:
       path: '{{ zmienna_1 }}'
       state: touch
     when: plik1_test
 
-  - name: "Test pliku2"
+  - name: "File 2 Test"
     stat:
       path: '{{ zmienna_2 }}'
     register: plik2_test
 
-  - name: "Utworz plik"
+  - name: "Creating File 2"
     file:
       path: '{{ zmienna_2 }}'
       state: touch
